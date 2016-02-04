@@ -10,7 +10,7 @@ $password = 'root';
 
 try
 {
-    $dbh = new PDO("mysql:host=$hostname;dbname=shopping_cat", $username, $password);
+    $dbh = new PDO("mysql:host=$hostname;dbname=shopping-cart", $username, $password);
 }
 catch(PDOException $e)
 {
