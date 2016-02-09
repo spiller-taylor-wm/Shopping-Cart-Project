@@ -11,22 +11,6 @@
         </style>
     </head>
     <body>
-        <table>
-            <tr>
-                <td><img src="pic/iron_animals.png"/></td>
-                <td><img src="pic/iron_deathstar.jpg"/></td>
-                <td><img src="pic/iron_fish.jpg"/></td>
-            </tr>
-            <tr>
-                <td><img src="pic/iron_gator.jpg"/></td>
-                <td><img src="pic/iron_heartflower.jpg/"></td>
-                <td><img src="pic/iron_heartpop.jpg"/></td>
-            </tr>
-            <tr>
-                <td><img src="pic/iron_keyboard.jpg"/></td>
-                <td><img src="pic/iron_pixel.jpg"/></td>
-                <td><img src="pic/iron_gator1.jpg"/></td>
-            </tr>
-        </table>
+    <a href="shop.php">shop</a>
     </body>
 </html>
