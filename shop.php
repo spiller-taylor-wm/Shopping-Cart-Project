@@ -9,12 +9,30 @@
      */
     $stmt = $dbh->prepare('SELECT * FROM products');
     $result = $stmt->execute();
+
     if(!$result){
         $error .= '<p>There was an error processing your request.</p>';
     }else {
         $products = $stmt->fetchAll();
     }
 
+    if(@$_POST['add_cart']){
+
+        $stmt = $dbh->prepare('INSERT INTO cart (name, email, password, username) VALUES (:product)');
+        $result = $stmt->execute(
+            array(
+                'name' => $_POST['name']
+            )
+        );
+
+
+        if ($result) {
+            $success = "User " . $_POST['email'] . " was successfully saved.";
+        } else {
+            $success = "There was an error saving " . $_POST['email'];
+        }
+
+    }
 ?>
 
 <!DOCTYPE html>
@@ -75,10 +93,12 @@
             <table align="center">
                 <?php
                 foreach($products as $product){
+                    $shop_id = $product['id_product'];
                     ?>
                     <tr>
                         <td><?php echo $product['name']?></td>
                         <td><?php echo $product['price']?></td>
+                        <td><?php echo '<form method="post"><input type="submit" name="add_cart" id="$shop_id" value="Add to Cart"/></form>'?></td>
                     </tr>
                     <?php
                 }
@@ -89,7 +109,7 @@
         <!-- End of content-->
 
         <div id="footer">
-            <p>Taylor Spiller [2016]</p>
+            <p>Taylor Spiller</p>
         </div>
 
     </body>

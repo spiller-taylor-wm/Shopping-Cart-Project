@@ -10,7 +10,7 @@
 
 
     try {
-        $dbh = new PDO("mysql:host=$hostname;dbname=shopping-cart", $username, $password);
+        $dbh = new PDO("mysql:host=$hostname;dbname=shopping-cart-2", $username, $password);
     }
     catch(PDOException $e) {
         echo $e->getMessage();
