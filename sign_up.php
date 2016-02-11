@@ -1,3 +1,45 @@
+<?php
+    require_once('connect.php');
+    $error = false;
+    $success = false;
+
+    if(@$_POST['addUser']){
+        /**
+         * New user was submitted. Make sure name and email are present!
+         */
+        if(!$_POST['email'] || !$_POST['name'] || !$_POST['password']){
+            $error .= '<p>Please enter all fields.</p>';
+        }
+
+        if($_POST['password'] != $_POST['password_confirm']){
+            $error .= '<p>Your passwords do not match.</p>';
+        }
+
+        /**
+         * If we're here...all is well. Process the insert
+         */
+        if($_POST['name'] && $_POST['email'] && $_POST['password'] && $_POST['username'] && $_POST['password'] == $_POST['password_confirm']) {
+
+            $stmt = $dbh->prepare('INSERT INTO users (name, email, password, username) VALUES (:name, :email, :password, :username)');
+            $result = $stmt->execute(
+                array(
+                    'name' => $_POST['name'],
+                    'email' => $_POST['email'],
+                    'password' => $_POST['password'],
+                    'username' => $_POST['username']
+                )
+            );
+
+
+            if ($result) {
+                $success = "User " . $_POST['email'] . " was successfully saved.";
+            } else {
+                $success = "There was an error saving " . $_POST['email'];
+            }
+        }
+    }
+?>
+
 <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -51,22 +93,13 @@
 
         <!-- This is where all the content that will change from page to page is added -->
         <div id="content">
-            <h1>Products</h1>
-            <table align="center">
-                <?php
-                foreach($products as $product){
-                    $shop_id = $product['id_product'];
-                    ?>
-                    <tr>
-                        <td><?php echo $product['name']?></td>
-                        <td><?php echo $product['price']?></td>
-                        <td><?php echo '<form method="post"><input type="submit" name="add_cart" id="$shop_id" value="Add to Cart"/></form>'?></td>
-                    </tr>
-                    <?php
-                }
-                ?>
-
-            </table>
+            <form name="addUser" method="post">
+                <input type="password" name="password" placeholder="password">
+                <input type="password" name="password_confirm" placeholder="confirm password">
+                <input type="text" name="email" placeholder="email">
+                <input type="text" name="name" placeholder="name">
+                <button type="submit" name="addUser" value="1"></button>
+            </form>
         </div>
         <!-- End of content-->
 

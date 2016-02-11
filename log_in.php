@@ -1,4 +1,12 @@
-<!DOCTYPE html>
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Taylor
+ * Date: 2/10/2016
+ * Time: 5:19 PM
+ */
+?>
+
 <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -25,7 +33,6 @@
 
         </style>
     </head>
-
     <body>
         <!-- Top Logo -->
         <header>
@@ -38,7 +45,7 @@
         <div style="z-index: 10" id='cssmenu'>
             <ul>
                 <li class='active'><a href='index.php'><span>Home</span></a></li>
-                <li><a href='shop.php'><span>Shop</span></a>
+                <li><a href='#'><span>Shop</span></a>
                     <ul>
                         <li class='has-sub'><a href='#'><span>Caskets</span></a></li>
                         <li class='has-sub'><a href='#'><span>Urns</span></a></li>
