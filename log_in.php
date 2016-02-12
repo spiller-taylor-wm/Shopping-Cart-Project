@@ -60,7 +60,8 @@
 
         <!-- This is where all the content that will change from page to page is added -->
         <div id="content">
-
+            <form
+            <a href="sign_up.php">sign up</a>
         </div>
         <!-- End of content-->
 

@@ -7,7 +7,7 @@
         /**
          * New user was submitted. Make sure name and email are present!
          */
-        if(!$_POST['email'] || !$_POST['name'] || !$_POST['password']){
+        if(!$_POST['email'] || !$_POST['name_first'] || !$_POST['password']){
             $error .= '<p>Please enter all fields.</p>';
         }
 
@@ -18,15 +18,14 @@
         /**
          * If we're here...all is well. Process the insert
          */
-        if($_POST['name'] && $_POST['email'] && $_POST['password'] && $_POST['username'] && $_POST['password'] == $_POST['password_confirm']) {
+        if($_POST['name_first'] && $_POST['email'] && $_POST['password'] && $_POST['password'] == $_POST['password_confirm']) {
 
-            $stmt = $dbh->prepare('INSERT INTO users (name, email, password, username) VALUES (:name, :email, :password, :username)');
+            $stmt = $dbh->prepare('INSERT INTO users (email, name_first, password) VALUES (:email, :name_first, :password)');
             $result = $stmt->execute(
                 array(
-                    'name' => $_POST['name'],
                     'email' => $_POST['email'],
-                    'password' => $_POST['password'],
-                    'username' => $_POST['username']
+                    'name_first' => $_POST['name_first'],
+                    'password' => $_POST['password']
                 )
             );
 
@@ -94,12 +93,18 @@
         <!-- This is where all the content that will change from page to page is added -->
         <div id="content">
             <form name="addUser" method="post">
+                <input type="text" name="email" placeholder="email">
+                <input type="text" name="name_first" placeholder="name_first">
                 <input type="password" name="password" placeholder="password">
                 <input type="password" name="password_confirm" placeholder="confirm password">
-                <input type="text" name="email" placeholder="email">
-                <input type="text" name="name" placeholder="name">
-                <button type="submit" name="addUser" value="1"></button>
+                <button type="submit" name="addUser" value="1">Submit</button>
             </form>
+            <a href="log_in.php">log in</a>
+
+            <?php
+            echo $error;
+            echo $success;
+            ?>
         </div>
         <!-- End of content-->
 

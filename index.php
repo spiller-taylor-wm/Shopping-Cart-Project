@@ -38,15 +38,9 @@
         <div style="z-index: 10" id='cssmenu'>
             <ul>
                 <li class='active'><a href='index.php'><span>Home</span></a></li>
-                <li><a href='shop.php'><span>Shop</span></a>
-                    <ul>
-                        <li class='has-sub'><a href='#'><span>Caskets</span></a></li>
-                        <li class='has-sub'><a href='#'><span>Urns</span></a></li>
-                        <li class='has-sub'><a href='#'><span>Flowers</span></a></li>
-                    </ul>
-                </li>
+                <li><a href='shop.php'><span>Shop</span></a></li>
                 <li><a href='#'><span>Schedule</span></a></li>
-                <li class='last'><a href="#"><span>Sign In</span></a></li>
+                <li class='last'><a href="log_in.php"><span>Sign In</span></a></li>
             </ul>
         </div>
         <!-- END OF NAVIGATION BAR -->
