@@ -47,7 +47,14 @@
 
         <!-- This is where all the content that will change from page to page is added -->
         <div id="content">
-
+            <a href="shop.php">shop</a>
+            <a href="about.html">about</a>
+            <a href="account.php">account</a>
+            <a href="cart.php">cart</a>
+            <a href="contact.html">contact</a>
+            <a href="faq.html">FAQ</a>
+            <a href="log_in.php">Log In</a>
+            <a href="sign_up.php">Sign up</a>
         </div>
         <!-- End of content-->
 

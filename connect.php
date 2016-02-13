@@ -6,7 +6,7 @@
     $username = 'root';
 
     /*** mysql password ***/
-    $password = '';
+    $password = 'root';
 
 
     try {

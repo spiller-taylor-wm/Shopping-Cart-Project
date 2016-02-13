@@ -91,6 +91,7 @@
             <h1>Products</h1>
             <table align="center">
                 <?php
+                /**
                 foreach($products as $product){
                     $shop_id = $product['id_product'];
                     ?>
@@ -100,6 +101,10 @@
                         <td><?php echo '<form method="post"><input type="submit" name="add_cart" id="$shop_id" value="Add to Cart"/></form>'?></td>
                     </tr>
                     <?php
+                }
+                 */
+                foreach($products as $product){
+
                 }
                 ?>
 

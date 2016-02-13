@@ -1,10 +1,42 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Taylor
- * Date: 2/10/2016
- * Time: 5:19 PM
- */
+    require_once('connect.php');
+    $error = false;
+    $success = false;
+
+    if(@$_POST['logIn']){
+        /**
+         * New user was submitted. Make sure name and email are present!
+         */
+        if(!$_POST['email'] || !$_POST['password']){
+            $error .= '<p>Please enter all fields.</p>';
+        }
+
+        /**
+         * If we're here...all is well. Process the insert
+         */
+
+
+
+        if($_POST['name_first'] && $_POST['email']) {
+
+            $email = $POST['email'];
+            /** I know this isn't secure, but it will work for now */
+            $stmt = $dbh->prepare('SELECT password FROM users WHERE users.email = $email');
+            $pass = $stmt->execute();
+            if($POST['password'] == $stmt->execute()){
+                $result = true;
+            } else {
+                $result = false;
+            }
+
+
+            if ($result) {
+                $success = "User " . $_POST['email'] . " was successfully saved.";
+            } else {
+                $success = "There was an error saving " . $_POST['email'];
+            }
+        }
+    }
 ?>
 
 <html lang="en">
@@ -60,8 +92,18 @@
 
         <!-- This is where all the content that will change from page to page is added -->
         <div id="content">
-            <form
+            <form method="post" name="logIn">
+                <input type="text" name="email" placeholder="email">
+                <input type="text" name="password" placeholder="password">
+                <button type="submit" name="logIn" value="1">Sign In</button>
+            </form>
             <a href="sign_up.php">sign up</a>
+
+            <?php
+            $stmt = $dbh->prepare('SELECT password FROM users WHERE users.email = $email');
+            $pass = $stmt->execute();
+            echo $pass;
+            ?>
         </div>
         <!-- End of content-->
 

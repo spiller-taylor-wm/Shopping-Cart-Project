@@ -15,6 +15,8 @@
             $error .= '<p>Your passwords do not match.</p>';
         }
 
+
+
         /**
          * If we're here...all is well. Process the insert
          */
