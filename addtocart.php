@@ -1,9 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Taylor
- * Date: 2/10/2016
- * Time: 4:49 PM
- */
-session_start();
+    session_start();
 
+    $stmt = $dbh->prepare('INSERT INTO cart (users_id, products_id) VALUES (:users_id, :products_id)');
+    $result = $stmt->execute(
+        array(
+            /** Temporary Placeholder user */
+            'users_id' => 1,
+            'products_id' => $_POST['id']
+        )
+    );

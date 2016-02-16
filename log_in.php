@@ -17,13 +17,14 @@
 
 
 
-        if($_POST['name_first'] && $_POST['email']) {
+        if($_POST['password'] && $_POST['email']) {
 
-            $email = $POST['email'];
+            $email = $_POST['email'];
             /** I know this isn't secure, but it will work for now */
-            $stmt = $dbh->prepare('SELECT password FROM users WHERE users.email = $email');
-            $pass = $stmt->execute();
-            if($POST['password'] == $stmt->execute()){
+            $stmt = $dbh->prepare("SELECT password FROM users WHERE email = '".$_POST["email"]."'");
+            $stmt->execute();
+            $pass = $stmt->fetchAll();
+            if($_POST['password'] == $pass){
                 $result = true;
             } else {
                 $result = false;
@@ -31,9 +32,10 @@
 
 
             if ($result) {
-                $success = "User " . $_POST['email'] . " was successfully saved.";
+                $success = "User " . $_POST['email'] . " was successfully logged in.";
+
             } else {
-                $success = "There was an error saving " . $_POST['email'];
+                $success = "There was an error signing in " . $_POST['email'];
             }
         }
     }
@@ -94,14 +96,16 @@
         <div id="content">
             <form method="post" name="logIn">
                 <input type="text" name="email" placeholder="email">
-                <input type="text" name="password" placeholder="password">
+                <input type="password" name="password" placeholder="password">
                 <button type="submit" name="logIn" value="1">Sign In</button>
             </form>
             <a href="sign_up.php">sign up</a>
 
             <?php
-            $stmt = $dbh->prepare('SELECT password FROM users WHERE users.email = $email');
-            $pass = $stmt->execute();
+            $email = 'example@gmail.com';
+            $stmt = $dbh->prepare("SELECT password FROM users WHERE email = '".$_POST["email"]."'");
+            $stmt->execute();
+            $pass = $stmt->fetchAll();
             echo $pass;
             ?>
         </div>

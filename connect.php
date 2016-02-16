@@ -6,8 +6,11 @@
     $username = 'root';
 
     /*** mysql password ***/
+    /** if using at west-mec
     $password = 'root';
-
+    ***/
+    /**If using at home ***/
+    $password = '';
 
     try {
         $dbh = new PDO("mysql:host=$hostname;dbname=shopping-cart-2", $username, $password);

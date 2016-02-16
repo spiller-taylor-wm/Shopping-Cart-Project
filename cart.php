@@ -1,3 +1,20 @@
+<?php
+    require_once('connect.php');
+    $stmt = $dbh->prepare('SELECT c.quantity, p.name, c.id, p.price, p.picture, p.artist, c.products_id FROM products p INNER JOIN cart c ON c.products_id=p.id');
+    $result = $stmt->execute();
+    $message = "";
+
+    if(!$result){
+        $error .= '<p>There was an error processing your request.</p>';
+    }else {
+        $cart_stuff = $stmt->fetchAll();
+    }
+
+    if(@$_POST['remove_cart']){
+        $stmt = $dbh->prepare("DELETE FROM cart WHERE id = '".$_POST['id_cart']."' AND users_id = '1'");
+        $result = $stmt->execute();
+    }
+?>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -18,10 +35,9 @@
                 padding-right: 20px;
             }
             img{
-                width: 200px;
-                height: 200px;
+                width: 100px;
+                height: 100px;
             }
-
         </style>
     </head>
     <body>
@@ -54,16 +70,20 @@
             <h1>Products</h1>
             <table align="center">
                 <?php
-                foreach($products as $product){
-                    $shop_id = $product['id_product'];
+                foreach($cart_stuff as $cart){
+                    $path = "pics/". $cart['picture'];
+                    $cart_id_entry = $cart['id'];
                     ?>
                     <tr>
-                        <td><?php echo $product['name']?></td>
-                        <td><?php echo $product['price']?></td>
-                        <td><?php echo '<form method="post"><input type="submit" name="add_cart" id="$shop_id" value="Add to Cart"/></form>'?></td>
+                        <td><?php echo $cart['name']?></td>
+                        <td><?php echo $cart['price']?></td>
+                        <td><?php echo $cart['quantity']?></td>
+                        <td><?php echo "<img src='$path'/>"?></td>
+                        <td><?php echo "<form method='post'><input type='hidden' name='id_cart' value='$cart_id_entry' /><input type='submit' name='remove_cart' value='Remove from Cart'/></form>"?></td>
                     </tr>
                     <?php
                 }
+                echo $message;
                 ?>
 
             </table>

@@ -1,9 +1,6 @@
 <?php
     require_once('connect.php');
-    $error = false;
-    $success = false;
-    $products = array();
-
+    $message = "";
     /**
      * We'll always want to pull the users to show them in the table
      */
@@ -11,27 +8,24 @@
     $result = $stmt->execute();
 
     if(!$result){
-        $error .= '<p>There was an error processing your request.</p>';
+        $message .= '<p>There was an error processing your request.</p>';
     }else {
         $products = $stmt->fetchAll();
     }
 
     if(@$_POST['add_cart']){
-
-        $stmt = $dbh->prepare('INSERT INTO cart (name, email, password, username) VALUES (:product)');
-        $result = $stmt->execute(
-            array(
-                'name' => $_POST['name']
-            )
-        );
-
-
-        if ($result) {
-            $success = "User " . $_POST['email'] . " was successfully saved.";
-        } else {
-            $success = "There was an error saving " . $_POST['email'];
+        /** Will not add to cart if the quantity is 0 */
+        if(@$_POST['quantity'] > 0) {
+            $stmt = $dbh->prepare('INSERT INTO cart (users_id, products_id, quantity) VALUES (:users_id, :products_id, :quantity)');
+            $result = $stmt->execute(
+                array(
+                    /** Temporary Placeholder user */
+                    'users_id' => '1',
+                    'products_id' => $_POST['id_product'],
+                    'quantity' => $_POST['quantity']
+                )
+            );
         }
-
     }
 ?>
 
@@ -58,7 +52,6 @@
                 width: 200px;
                 height: 200px;
             }
-
         </style>
     </head>
     <body>
@@ -91,21 +84,19 @@
             <h1>Products</h1>
             <table align="center">
                 <?php
-                /**
                 foreach($products as $product){
-                    $shop_id = $product['id_product'];
+                    $shop_id = $product['id'];
+                    $path = "pics/". $product['picture'];
                     ?>
                     <tr>
                         <td><?php echo $product['name']?></td>
-                        <td><?php echo $product['price']?></td>
-                        <td><?php echo '<form method="post"><input type="submit" name="add_cart" id="$shop_id" value="Add to Cart"/></form>'?></td>
+                        <td><?php echo "<img src='$path'/>" ?></td>
+                        <td><?php echo "$" .$product['price']?></td>
+                        <td><?php echo "<form method='post'><input type='hidden' name='id_product' value='$shop_id' /><input name='quantity' value='0' type='number' min='0'/><input type='submit' name='add_cart'/></form>" ?></td>
                     </tr>
                     <?php
                 }
-                 */
-                foreach($products as $product){
-
-                }
+                echo $message;
                 ?>
 
             </table>
