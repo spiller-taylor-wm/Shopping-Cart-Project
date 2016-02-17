@@ -32,7 +32,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Grave Investments</title>
+        <title>Products</title>
         <link rel="stylesheet" type="text/css" href="css/style.css"/>
 
         <!-- Files for menu bar -->
@@ -43,6 +43,7 @@
             td{
                 padding-right: 30px;
                 text-align: center;
+                width: 33%;
             }
             p, h1{
                 padding-left: 20px;
@@ -66,15 +67,13 @@
         <div style="z-index: 10" id='cssmenu'>
             <ul>
                 <li class='active'><a href='index.php'><span>Home</span></a></li>
-                <li><a href='#'><span>Shop</span></a>
-                    <ul>
-                        <li class='has-sub'><a href='#'><span>Caskets</span></a></li>
-                        <li class='has-sub'><a href='#'><span>Urns</span></a></li>
-                        <li class='has-sub'><a href='#'><span>Flowers</span></a></li>
-                    </ul>
-                </li>
-                <li><a href='#'><span>Schedule</span></a></li>
-                <li class='last'><a href="#"><span>Sign In</span></a></li>
+                <li><a href='shop.php'><span>Shop</span></a></li>
+                <li><a href='about.html'><span>About</span></a></li>
+                <li><a href="account.php">Profile</a></li>
+                <li><a href="cart.php">Cart</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li class='last'><a href="log_in.php"><span>Sign In</span></a></li>
             </ul>
         </div>
         <!-- END OF NAVIGATION BAR -->
@@ -84,21 +83,29 @@
             <h1>Products</h1>
             <table align="center">
                 <?php
-                foreach($products as $product){
-                    $shop_id = $product['id'];
-                    $path = "pics/". $product['picture'];
-                    ?>
-                    <tr>
-                        <td><?php echo $product['name']?></td>
-                        <td><?php echo "<img src='$path'/>" ?></td>
-                        <td><?php echo "$" .$product['price']?></td>
-                        <td><?php echo "<form method='post'><input type='hidden' name='id_product' value='$shop_id' /><input name='quantity' value='0' type='number' min='0'/><input type='submit' name='add_cart'/></form>" ?></td>
-                    </tr>
-                    <?php
-                }
-                echo $message;
+                    $count = 0;
+                    foreach ($products as $product) {
+                        $shop_id = $product['id'];
+                        $path = "pics/" . $product['picture'];
+                        if ($count%3 == 0){
+                            echo "<tr>";
+                        }
+                        ?>
+                        <td>
+                            <?php echo "<img src='$path'/><br/>" ?>
+                            <?php echo $product['artist'] .": " .$product['name']?>
+                            <br/>
+                            <?php echo "$" .$product['price']?>
+                            <br/>
+                            <?php echo "<form method='post'><input type='hidden' name='id_product' value='$shop_id' />Quantity: <input name='quantity' style='width: 3em;' value='0' type='number' min='0'/><br/><input type='submit' name='add_cart' value='Add to Cart'/></form>" ?>
+                        </td>
+                        <?php
+                        if ($count%3 == 2){
+                            echo "</tr>";
+                        }
+                        $count += 1;
+                    }
                 ?>
-
             </table>
         </div>
         <!-- End of content-->
