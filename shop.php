@@ -13,6 +13,9 @@
         $products = $stmt->fetchAll();
     }
 
+/** MAKE EXCEPTIONS FOR WHEN SOMEONE IS NOT LOGGED IN AND THEY TRY TO ADD STUFF */
+$_SESSION['users_id'] = '2';
+
     if(@$_POST['add_cart']){
         /** Will not add to cart if the quantity is 0 */
         if(@$_POST['quantity'] > 0) {
@@ -20,7 +23,7 @@
             $result = $stmt->execute(
                 array(
                     /** Temporary Placeholder user */
-                    'users_id' => '1',
+                    'users_id' => $_SESSION['users_id'],
                     'products_id' => $_POST['id_product'],
                     'quantity' => $_POST['quantity']
                 )
