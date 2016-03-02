@@ -11,7 +11,7 @@
     }
 
     if(@$_POST['remove_cart']){
-        $stmt = $dbh->prepare("DELETE FROM cart WHERE id = '".$_POST['id_cart']."' AND users_id = '1'");
+        $stmt = $dbh->prepare("DELETE FROM cart WHERE id = '".$_POST['id_cart']."' AND users_id = '".$_SESSION['users_id']."'");
         $result = $stmt->execute();
     }
 ?>

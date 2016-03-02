@@ -13,21 +13,26 @@
         $products = $stmt->fetchAll();
     }
 
-/** MAKE EXCEPTIONS FOR WHEN SOMEONE IS NOT LOGGED IN AND THEY TRY TO ADD STUFF */
-$_SESSION['users_id'] = '2';
+$_SESSION['users_id'] = null;
 
-    if(@$_POST['add_cart']){
-        /** Will not add to cart if the quantity is 0 */
-        if(@$_POST['quantity'] > 0) {
-            $stmt = $dbh->prepare('INSERT INTO cart (users_id, products_id, quantity) VALUES (:users_id, :products_id, :quantity)');
-            $result = $stmt->execute(
-                array(
-                    /** Temporary Placeholder user */
-                    'users_id' => $_SESSION['users_id'],
-                    'products_id' => $_POST['id_product'],
-                    'quantity' => $_POST['quantity']
-                )
-            );
+    if(@$_POST['add_cart']) {
+        /** Must be logged in to add items to cart.  */
+        if(!is_null($_SESSION['users_id'])) {
+            /** Will not add to cart if the quantity is 0 */
+            if (@$_POST['quantity'] > 0) {
+                $stmt = $dbh->prepare('INSERT INTO cart (users_id, products_id, quantity) VALUES (:users_id, :products_id, :quantity)');
+                $result = $stmt->execute(
+                    array(
+                        /** Temporary Placeholder user */
+                        'users_id' => $_SESSION['users_id'],
+                        'products_id' => $_POST['id_product'],
+                        'quantity' => $_POST['quantity']
+                    )
+                );
+            }
+        } else {
+            /** They are not logged in */
+            echo "You are not logged in!!";
         }
     }
 ?>
