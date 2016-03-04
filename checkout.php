@@ -12,13 +12,27 @@
     }
 
     if(@$_POST['check_out']){
+        /** Create Order */
         $stmt = $dbh->prepare('INSERT INTO orders (users_id) VALUES (:users_id)');
         $result = $stmt->execute(
             array(
                 /** Temporary Placeholder user */
-                'users_id' => '1',
+                'users_id' => $_SESSION['users_id']
             )
         );
+
+        $order_id = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        $stmt = $dbh->prepare('INSERT INTO orders_products (products_id, orders_id, quantity) VALUES (:products_id, :orders_id, :quantity)');
+        foreach ($cart_stuff as $order) {
+            $result = $stmt->execute(
+                array(
+                    'products_id'   => $order['products_id'],
+                    'orders_id'     => $order_id,
+                    'quantity'      => $order['quantity']
+                )
+            );
+        }
     }
 ?>
 
@@ -114,6 +128,9 @@
             <p>Subtotal = $<?php echo $subtotal ?></p>
             <p>Tax = $<?php echo $tax ?></p>
             <p>Total = $<?php echo $tax + $subtotal?></p>
+            <form method = "post">
+                <input type="submit" name="check_out" value="Check Out">
+            </form>
         </div>
     </div>
     <!-- End of content-->

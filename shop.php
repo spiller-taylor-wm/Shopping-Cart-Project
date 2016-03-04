@@ -13,26 +13,17 @@
         $products = $stmt->fetchAll();
     }
 
-$_SESSION['users_id'] = null;
-
     if(@$_POST['add_cart']) {
-        /** Must be logged in to add items to cart.  */
-        if(!is_null($_SESSION['users_id'])) {
-            /** Will not add to cart if the quantity is 0 */
-            if (@$_POST['quantity'] > 0) {
-                $stmt = $dbh->prepare('INSERT INTO cart (users_id, products_id, quantity) VALUES (:users_id, :products_id, :quantity)');
-                $result = $stmt->execute(
-                    array(
-                        /** Temporary Placeholder user */
-                        'users_id' => $_SESSION['users_id'],
-                        'products_id' => $_POST['id_product'],
-                        'quantity' => $_POST['quantity']
-                    )
-                );
-            }
-        } else {
-            /** They are not logged in */
-            echo "You are not logged in!!";
+        /** Will not add to cart if the quantity is 0 */
+        if (@$_POST['quantity'] > 0) {
+            $stmt = $dbh->prepare('INSERT INTO cart (users_id, products_id, quantity) VALUES (:users_id, :products_id, :quantity)');
+            $result = $stmt->execute(
+                array(
+                    'users_id' => $_SESSION['users_id'],
+                    'products_id' => $_POST['id_product'],
+                    'quantity' => $_POST['quantity']
+                )
+            );
         }
     }
 ?>
@@ -91,6 +82,7 @@ $_SESSION['users_id'] = null;
             <h1>Products</h1>
             <table align="center">
                 <?php
+                $total = count($products);
                     $count = 0;
                     foreach ($products as $product) {
                         $shop_id = $product['id'];
@@ -108,7 +100,7 @@ $_SESSION['users_id'] = null;
                             <?php echo "<form method='post'><input type='hidden' name='id_product' value='$shop_id' />Quantity: <input name='quantity' style='width: 3em;' value='0' type='number' min='0'/><br/><input type='submit' name='add_cart' value='Add to Cart'/></form>" ?>
                         </td>
                         <?php
-                        if ($count%3 == 2){
+                        if ($count%3 == 2 || $count == $total){
                             echo "</tr>";
                         }
                         $count += 1;

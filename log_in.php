@@ -15,28 +15,34 @@
          * If we're here...all is well. Process the insert
          */
 
-
-
         if($_POST['password'] && $_POST['email']) {
 
             $email = $_POST['email'];
-            /** I know this isn't secure, but it will work for now */
-            $stmt = $dbh->prepare("SELECT password FROM users WHERE email = '".$_POST["email"]."'");
-            $stmt->execute();
-            $pass = $stmt->fetchAll();
+            /** Checks Password */
+            $stmt = $dbh->prepare('SELECT password FROM users WHERE email = "y"');
+            $result = $stmt->execute();
+
+            if(!$result){
+                $error .= '<p>Your email and password combination is incorrect!</p>';
+            }else {
+                $pass = $stmt->fetch();
+            }
+            echo $pass;
+            /**
             if($_POST['password'] == $pass){
-                $result = true;
+                $stmt = $dbh->prepare('SELECT id FROM users WHERE email = :email AND password = :password');
+                $result = $stmt->execute(
+                    array(
+                        'email'     => 'y',
+                        'password'  => 'y'
+                    )
+                );
+                $_SESSION['users_id'] = $result;
+                $error = '<p>User '. $_POST['email'] .' was logged in.</p>';
             } else {
-                $result = false;
+                $error .= '<p>Your email and password combination is incorrect!</p>';
             }
-
-
-            if ($result) {
-                $success = "User " . $_POST['email'] . " was successfully logged in.";
-
-            } else {
-                $success = "There was an error signing in " . $_POST['email'];
-            }
+             * */
         }
     }
 ?>
@@ -109,6 +115,7 @@
             $pass = $stmt->fetchAll();
             echo $pass;
              */
+            echo $error;
             ?>
         </div>
         <!-- End of content-->
