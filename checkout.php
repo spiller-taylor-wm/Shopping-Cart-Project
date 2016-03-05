@@ -11,7 +11,7 @@
         $cart_stuff = $stmt->fetchAll();
     }
 
-    if(@$_POST['check_out']){
+    if(@$_POST['check_out']){   // Adds user id to orders table
         /** Create Order */
         $stmt = $dbh->prepare('INSERT INTO orders (users_id) VALUES (:users_id)');
         $result = $stmt->execute(
@@ -20,19 +20,30 @@
                 'users_id' => $_SESSION['users_id']
             )
         );
+        $orders_id = $dbh->lastInsertId();    // Grabs the last id that was entered, which will be used as the orders id
 
-        $order_id = $stmt->fetch(PDO::FETCH_ASSOC);
-        
-        $stmt = $dbh->prepare('INSERT INTO orders_products (products_id, orders_id, quantity) VALUES (:products_id, :orders_id, :quantity)');
-        foreach ($cart_stuff as $order) {
-            $result = $stmt->execute(
+        $query = "INSERT INTO orders_products (products_id, orders_id, quantity) VALUES (:products_id, :orders_id, :quantity)";
+        $stmt = $dbh->prepare($query);
+
+        foreach ($cart_stuff as $order) {   // Adds all items in the cart to the orders_products table
+            $products_id = $order['products_id'];
+            $quantity = $order['products_id'];
+            $stmt->execute(
                 array(
-                    'products_id'   => $order['products_id'],
-                    'orders_id'     => $order_id,
-                    'quantity'      => $order['quantity']
+                    'products_id'   => $products_id,
+                    'orders_id'     => $orders_id,
+                    'quantity'      => $quantity
                 )
             );
         }
+
+        // Empties the Cart
+        $query = "TRUNCATE TABLE cart";
+        $stmt = $dbh->prepare($query);
+        $stmt->execute();
+
+        // Adds success message
+        $message .= "Order successfully placed!";
     }
 ?>
 
@@ -131,6 +142,7 @@
             <form method = "post">
                 <input type="submit" name="check_out" value="Check Out">
             </form>
+            <?php echo $msg; ?>
         </div>
     </div>
     <!-- End of content-->

@@ -19,30 +19,26 @@
 
             $email = $_POST['email'];
             /** Checks Password */
-            $stmt = $dbh->prepare('SELECT password FROM users WHERE email = "y"');
-            $result = $stmt->execute();
+            $query = "SELECT password FROM users WHERE email = :email";
+            $stmt = $dbh->prepare($query);
+            $stmt->execute(array('email'=>$email));
+            $pass = $stmt->fetchColumn();
 
-            if(!$result){
-                $error .= '<p>Your email and password combination is incorrect!</p>';
-            }else {
-                $pass = $stmt->fetch();
-            }
-            echo $pass;
-            /**
             if($_POST['password'] == $pass){
                 $stmt = $dbh->prepare('SELECT id FROM users WHERE email = :email AND password = :password');
-                $result = $stmt->execute(
+                $stmt->execute(
                     array(
-                        'email'     => 'y',
-                        'password'  => 'y'
+                        'email'     => $email,
+                        'password'  => $pass
                     )
                 );
+                $result = $stmt->fetchColumn();
                 $_SESSION['users_id'] = $result;
                 $error = '<p>User '. $_POST['email'] .' was logged in.</p>';
             } else {
                 $error .= '<p>Your email and password combination is incorrect!</p>';
             }
-             * */
+
         }
     }
 ?>
@@ -108,14 +104,8 @@
             <a href="sign_up.php">sign up</a>
 
             <?php
-            /**
-            $email = 'example@gmail.com';
-            $stmt = $dbh->prepare("SELECT password FROM users WHERE email = '".$_POST["email"]."'");
-            $stmt->execute();
-            $pass = $stmt->fetchAll();
-            echo $pass;
-             */
-            echo $error;
+                echo $error;
+                echo $_SESSION['users_id'];
             ?>
         </div>
         <!-- End of content-->
